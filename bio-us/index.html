@@ -1,0 +1,74 @@
+
+
+
+
+
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=280"/>
+<title>Ticket 80mm</title>
+<style>
+  body{font-family:monospace; width:280px; margin:0; padding:8px; background:#fff; color:#000;}
+  .center{text-align:center;}
+  .tiny{font-size:11px;}
+  .small{font-size:12px;}
+  .bold{font-weight:700;}
+  .sep{border-top:1px dashed #000; margin:6px 0;}
+  .right{text-align:right;}
+  #qr{margin:6px auto; width:120px; height:120px;}
+  @media print{
+    body{width:80mm;}
+    .no-print{display:none;}
+  }
+</style>
+</head>
+<body>
+  <div class="center bold">Taller OS - Reparaciones</div>
+  <div class="center tiny">Ciudad - RFC/ID opcional</div>
+  <div class="sep"></div>
+
+  <div><strong>Cliente:</strong> <span id="cliente">--------------</span></div>
+  <div><strong>Servicio:</strong> <span id="servicio">Reparación</span></div>
+  <div class="right"><strong>$</strong> <span id="precio">0.00</span> MXN</div>
+  <div class="tiny">Fecha: <span id="fecha"></span></div>
+  <div class="sep"></div>
+
+  <div id="qrarea" class="center"></div>
+
+  <div class="tiny center">Política: 30 días garantía por fallas en servicio. No cubre golpes ni agua.</div>
+  <div class="tiny center">Contacto: 55-1234-5678</div>
+
+  <div style="margin-top:8px;" class="center no-print">
+    <label>Cliente <input id="c" /></label>
+    <label>Artículo <input id="it" /></label>
+    <label>Precio <input id="p" value="250" /></label>
+    <button id="g">Generar</button>
+    <button onclick="window.print()">Imprimir</button>
+  </div>
+
+<script>
+function pad(n){return n<10?'0'+n:n;}
+document.getElementById('g').addEventListener('click',()=>{
+  const cliente = document.getElementById('c').value || 'Cliente';
+  const item = document.getElementById('it').value || 'Servicio';
+  const precio = parseFloat(document.getElementById('p').value || 0).toFixed(2);
+  const now = new Date();
+  const fecha = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+  const folio = 'OS' + now.getFullYear().toString().slice(-2) + (Math.random().toString(36).slice(2,8)).toUpperCase();
+
+  document.getElementById('cliente').textContent = cliente;
+  document.getElementById('servicio').textContent = item;
+  document.getElementById('precio').textContent = precio;
+  document.getElementById('fecha').textContent = fecha;
+
+  // QR con Google Charts (funciona si estás online). Contiene texto simple: FOLIO|TOTAL|FECHA
+  const qrtext = encodeURIComponent('FOLIO:' + folio + '|TOTAL:' + precio + '|FECHA:' + fecha);
+  const qrimg = '<img alt="QR" src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=' + qrtext + '" style="width:120px;height:120px;"/>';
+  document.getElementById('qrarea').innerHTML = qrimg + '<div class="tiny">Folio: ' + folio + '</div>';
+});
+</script>
+</body>
+</html>
+
