@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Ticket - BIO-US / TechnoFix</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 20px;
+  }
+
+  /* Contenido normal de la página */
+  .no-print {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .ticket {
+    width: 320px;
+    padding: 20px;
+    background: #fff;
+    color: #000;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    border: 1px solid #000;
+    white-space: pre-wrap;
+    line-height: 1.3em;
+    margin: auto;
+  }
+
+  .ticket pre {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  button {
+    padding: 10px 20px;
+    background: #222;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+
+  button:hover { background: #000; }
+
+  /* LO QUE SE IMPRIME */
+  @media print {
+    body * { visibility: hidden; }
+    .ticket, .ticket * {
+      visibility: visible;
+    }
+    .ticket {
+      margin: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+</style>
+
+<script>
+function descargarPDF() {
+  window.print();
+}
+</script>
+
+</head>
+<body>
+
+<!-- CONTENIDO QUE NO SE IMPRIME -->
+<div class="no-print">
+  <h2>Panel de Control – No se imprime</h2>
+  <p>Aquí puedes poner notas, instrucciones, botones, links, etc.</p>
+  <p>Este contenido NO aparece en el PDF.</p>
+
+  <button onclick="descargarPDF()">Descargar PDF del Ticket</button>
+</div>
+
+<!-- TICKET QUE SÍ SE IMPRIME -->
+<div class="ticket">
+<pre>
+
+  Folio: <span id="folio"></span>
+
+BIO-US / TechnoFix
+Servicio por: Oscar
+Fecha: ________________________
+
+----------------------------------------
+           TICKET DE SERVICIO
+----------------------------------------
+Equipo: iPhone 6 Plus (A1522)
+Cliente: _______________________
+
+----------------------------------------
+           DIAGNÓSTICO
+----------------------------------------
+Revisión general................... $0
+Verificación de display/flex...... $0
+Estado de batería.................. $0
+
+Instrucciones:
+- Display negro o líneas:
+  → Revisar flex.
+- Touch falla:
+  → Limpiar conectores.
+- Carga muy lenta:
+  → Probar cargador original.
+- Batería baja rápido:
+  → Diagnóstico antes de cambiar.
+
+----------------------------------------
+         SERVICIOS REALIZADOS
+----------------------------------------
+Reconexión de flex............... $150
+Limpieza de conectores........... $50
+
+----------------------------------------
+        PIEZAS / MATERIALES
+----------------------------------------
+Display nuevo.................... $250
+Batería nueva.................... $180
+
+----------------------------------------
+               TOTAL
+----------------------------------------
+TOTAL A PAGAR.................... $____
+Pago recibido..................... $____
+
+----------------------------------------
+OBSERVACIONES
+----------------------------------------
+Equipo con daño por caída.
+Garantía de mano de obra: 15 días.
+No cubre humedad ni golpes nuevos.
+
+----------------------------------------
+GRACIAS POR SU PREFERENCIA
+BIO-US / TechnoFix
+</pre>
+</div>
+
+
+  <script>
+function generarFolio() {
+  let modelo = "1522"; // puedes cambiarlo dinámicamente si quieres
+  let now = new Date();
+
+  let y = now.getFullYear().toString().slice(2);
+  let m = ("0" + (now.getMonth() + 1)).slice( -2 );
+  let d = ("0" + now.getDate()).slice( -2 );
+  let min = ("0" + now.getMinutes()).slice( -2 );
+  let sec = ("0" + now.getSeconds()).slice( -2 );
+
+  let base = modelo + y + m + d + min + sec;
+  return base.slice(-8); // últimos 8 dígitos
+}
+
+window.onload = function() {
+  let folio = generarFolio();
+  document.getElementById("folio").textContent = folio;
+}
+</script>
+
+  
+</body>
+</html>
